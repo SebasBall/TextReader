@@ -29,3 +29,10 @@ jobs:
         echo "Attempting to run the Qt application in the Docker container..."
         docker run --rm my-qt-app:latest
         echo "Docker container finished execution."
+
+    - name: Upload screenshot artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: qt-app-screenshot
+        path: ./screenshot.png
+      if: success()
