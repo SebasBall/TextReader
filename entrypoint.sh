@@ -10,12 +10,12 @@ echo "Waiting for app to open (5 seconds)..."
 sleep 5
 
 echo "Taking screenshot..."
-scrot /mnt/workspace/screenshot.png # <--- CHANGED PATH TO MOUNTED VOLUME
+scrot /mnt/workspace/screenshot.png
 if [ $? -eq 0 ]; then
-    echo "scrot command executed successfully."
-    ls -l /mnt/workspace/screenshot.png # <--- CHECK MOUNTED PATH
+    echo "scrot command executed successfully"
+    ls -l /mnt/workspace/screenshot.png
 else
-    echo "scrot command failed to execute or save file!"
+    echo "scrot command failed to execute or save file"
     exit 1
 fi
 

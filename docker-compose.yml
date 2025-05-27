@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  textreader_app:
+    build: .
+    command: /app/TextReader
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg/PulseServer:/tmp/pulseaudio.socket
+    stdin_open: true
+    tty: true
