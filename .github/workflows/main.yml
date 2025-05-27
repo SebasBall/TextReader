@@ -1,0 +1,30 @@
+name: Build and Run Qt App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: my-qt-app:latest
+
+    - name: Run Docker container with Qt App (headless)
+      run: |
+        echo "Attempting to run the Qt application in the Docker container..."
+        docker run --rm my-qt-app:latest
+        echo "Docker container finished execution."
