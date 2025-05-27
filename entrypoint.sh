@@ -13,7 +13,7 @@ echo "Taking screenshot..."
 scrot /app/screenshot.png
 
 echo "Screenshot taken. Waiting for app to exit..."
-wait $APP_PID
+kill $APP_PID
 
 echo "App exited. Cleaning up Xvfb."
 kill $XVFB_PID
