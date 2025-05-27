@@ -22,6 +22,7 @@ jobs:
         context: .
         push: false
         tags: my-qt-app:latest
+        laod: true
 
     - name: Run Docker container with Qt App (headless)
       run: |
