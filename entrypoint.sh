@@ -1,0 +1,5 @@
+#!/bin/bash
+Xvfb :99 -screen 0 1024x768x24 &
+export DISPLAY=:99
+sleep 1
+exec /app/TextReader

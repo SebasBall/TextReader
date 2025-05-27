@@ -59,8 +59,10 @@ WORKDIR /app
 
 COPY --from=builder /app/TextReader /app/
 
-RUN chmod +x /app/TextReader
+COPY entrypoint.sh /app/entrypoint.sh
+
+RUN chmod +x /app/TextReader /app/entrypoint.sh
 
 ENV QT_QPA_PLATFORM=xcb
 
-CMD ["/app/TextReader"]
+CMD ["/app/entrypoint.sh"]
