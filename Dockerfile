@@ -55,6 +55,10 @@ apt-get install -y --no-install-recommends software-properties-common && \
     qtspeech5-speechd-plugin \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+    apt-get install -y xvfb x11-utils \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN which Xvfb || (echo "ERROR: Xvfb was not found after installation!" && exit 1)
 
 WORKDIR /app
