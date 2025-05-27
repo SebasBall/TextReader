@@ -10,15 +10,13 @@ echo "Waiting for app to open (5 seconds)..."
 sleep 5
 
 echo "Taking screenshot..."
-# Ensure the screenshot is written to the current working directory /app
-# and print success/failure of scrot
-scrot /app/screenshot.png
+scrot /mnt/workspace/screenshot.png # <--- CHANGED PATH TO MOUNTED VOLUME
 if [ $? -eq 0 ]; then
     echo "scrot command executed successfully."
-    ls -l /app/screenshot.png # List the file to confirm it's there
+    ls -l /mnt/workspace/screenshot.png # <--- CHECK MOUNTED PATH
 else
     echo "scrot command failed to execute or save file!"
-    exit 1 # Fail the script if scrot fails
+    exit 1
 fi
 
 echo "Screenshot process completed. Forcibly closing app..."

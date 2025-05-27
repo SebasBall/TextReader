@@ -24,15 +24,17 @@ jobs:
         tags: my-qt-app:latest
         load: true
 
+
     - name: Run Docker container with Qt App (headless)
       run: |
         echo "Attempting to run the Qt application in the Docker container..."
-        docker run --rm my-qt-app:latest
+        # Mount the runner's current working directory into the container at /mnt/workspace
+        docker run --rm -v "$(pwd):/mnt/workspace" my-qt-app:latest
         echo "Docker container finished execution."
 
     - name: Upload screenshot artifact
       uses: actions/upload-artifact@v4
       with:
         name: qt-app-screenshot
-        path: ./screenshot.png
+        path: ./screenshot.png # This path is correct for the runner's perspective
       if: success()
