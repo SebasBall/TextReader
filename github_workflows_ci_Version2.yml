@@ -1,38 +1,17 @@
-name: C++ CI with Static Analysis
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+on: push:
+name: deploy
 jobs:
-  build-and-analyze:
+  deploy:
+    name: deploy to cluster
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up C++ compiler
-        uses: aminya/setup-cpp@v1
-        with:
-          compiler: clang
-
-      - name: Install clang-tidy
-        run: sudo apt-get install -y clang-tidy
-
-      - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-
-      - name: Build
-        run: cmake --build build
-
-      - name: Static Analysis (clang-tidy)
-        run: |
-          if [ -f compile_commands.json ]; then
-            mv compile_commands.json build/
-          fi
-          cd build
-          find . -name "*.cpp" | xargs clang-tidy --quiet -p .
-
-      - name: Run Tests
-        run: ctest --test-dir build
+    - uses: actions/checkout@master
+    - name: build and push to docker
+      uses: docker/build-push-action@v1
+      with:
+       username: ${{ secrets.DOCKER_USERNAME }}
+       password: ${{ secrets.DOCKER_PASSWORD }}
+       repository: ${{ github.repository }}
+       tag_with_ref: true
+       tag_with_sha: true
+       tags: ${{ github.sha }}
