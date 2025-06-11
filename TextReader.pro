@@ -26,5 +26,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     .github/workflows/main.yml \
     Dockerfile \
+    Dockerfile.jenkins \
     docker-compose.yml \
     entrypoint.sh

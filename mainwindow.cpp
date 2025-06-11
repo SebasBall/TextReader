@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&speech, &QTextToSpeech::stateChanged, this, &MainWindow::on_speech_end);
 
     ui->voiceSelection->setDuplicatesEnabled(false);
+    qDebug() << "The application has been opened succesfully";
 }
 
 MainWindow::~MainWindow()
