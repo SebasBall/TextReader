@@ -1,16 +1,87 @@
+FROM jenkins/jenkins:lts-jdk21 AS builder
+
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build tools and Qt dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    g++ \
+    libgl-dev \
+    qtbase5-dev \
+    qt5-qmake \
+    libqt5texttospeech5-dev \
+    qttools5-dev-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY . /app
+
+# Set Qt environment variables before running qmake
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
+ENV QT_SELECT=qt5
+ENV PATH=/usr/lib/qt5/bin:$PATH
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LD_LIBRARY_PATH
+ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PKG_CONFIG_PATH
+
+# Build the Qt application
+RUN qmake -makefile TextReader.pro && \
+    make -j$(nproc)
+
 FROM jenkins/jenkins:lts-jdk21
 
 USER root
-RUN apt-get update && apt-get install -y lsb-release python3-pip
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Docker CLI inside Jenkins
-RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-     https://download.docker.com/linux/debian/gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) \
-     signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-     https://download.docker.com/linux/debian \
-     $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-RUN apt-get update && apt-get install -y docker-ce-cli
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libqt5core5a \
+    libqt5gui5 \
+    libqt5widgets5 \
+    libqt5texttospeech5 \
+    libpulse0 \
+    libxkbcommon-x11-0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-render-util0 \
+    libxcb-shm0 \
+    libxcb-sync1 \
+    libxcb-xfixes0 \
+    libxcb-xinerama0 \
+    libxcb-xinput0 \
+    libxcb-xkb1 \
+    libxrender1 \
+    libglx-mesa0 \
+    libopengl0 \
+    speech-dispatcher \
+    speech-dispatcher-espeak-ng \
+    espeak-ng \
+    espeak-ng-data \
+    pulseaudio-utils \
+    qtspeech5-speechd-plugin \
+    qt5-qmake \
+    g++ \
+    qttools5-dev-tools \
+    && rm -rf /var/lib/apt/lists/*
 
-USER jenkins
+RUN curl -fsSL https://get.docker.com | sh
+
+WORKDIR /app
+COPY --from=builder /app/TextReader /app/
+
+RUN mkdir -p /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins
+RUN touch /app/jenkins.log && chown jenkins:jenkins /app/jenkins.log
+
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/TextReader /app/entrypoint.sh
+
+ENV QT_QPA_PLATFORM=xcb
+ENV JENKINS_HOME=/var/jenkins_home
+
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.3 docker-workflow:1.28"
+
+CMD ["bash", "/app/entrypoint.sh"]
