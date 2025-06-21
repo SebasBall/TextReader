@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->locationsList->addItem("English");
     ui->locationsList->addItem("German");
 
+    ui->locationsList->setCurrentIndex(3);
+
     connect(&speech, &QTextToSpeech::stateChanged, this, &MainWindow::on_speech_end);
 
     ui->voiceSelection->setDuplicatesEnabled(false);
