@@ -150,9 +150,6 @@ void MainWindow::setTestMode(bool enabled){
                 case QTextToSpeech::Paused:
                     stateStr = "Paused";
                     break;
-                case QTextToSpeech::Error:
-                    stateStr = "Error";
-                    break;
                 default:
                     stateStr = "Unknown";
                     break;
