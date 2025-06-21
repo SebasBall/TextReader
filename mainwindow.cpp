@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_playButton_clicked()
 {
+    qDebug() << "The play button has been pressed";
     if(StopSpeech){
         speech.stop();
         setUpVoice(voices, ui->voiceSelection->currentText(), speech);
@@ -45,6 +46,7 @@ void MainWindow::on_playButton_clicked()
         ui->playButton->setText("Play");
         PauseSpeech = true;
     }
+    qDebug() << "The play button has been executed successfuly";
 }
 
 void MainWindow::setUpVoice(QVector<QVoice> voices,QString voiceName, QTextToSpeech &speech){

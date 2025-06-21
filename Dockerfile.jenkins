@@ -27,4 +27,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
 
+COPY run_and_capture.sh /app/run_and_capture.sh
+RUN chmod +x /app/run_and_capture.sh
+
 CMD ["/app/entrypoint.sh"]
