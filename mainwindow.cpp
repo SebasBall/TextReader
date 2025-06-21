@@ -17,19 +17,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->voiceSelection->setDuplicatesEnabled(false);
     qDebug() << "The application has been opened succesfully";
 
-    QString stateStr;
+    QString stateStr = "Speaker State: ";
     switch (speech.state()) {
     case QTextToSpeech::Ready:
-        stateStr = "Ready";
+        stateStr += "Ready";
         break;
     case QTextToSpeech::Speaking:
-        stateStr = "Speaking";
+        stateStr += "Speaking";
         break;
     case QTextToSpeech::Paused:
-        stateStr = "Paused";
+        stateStr += "Paused";
         break;
     default:
-        stateStr = "Unknown";
+        stateStr += "Unknown";
         break;
     }
     qDebug() << stateStr;
@@ -156,22 +156,21 @@ void MainWindow::setTestMode(bool enabled){
                                      "Maecenas adipiscing ante non diam sodales hendrerit.");
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
         QTimer::singleShot(2000, this, [this]() {
-            QString stateStr;
-            switch (speech.state()) {
+            QString stateStr = "Speaker State: ";
+                switch (speech.state()) {
                 case QTextToSpeech::Ready:
-                    stateStr = "Ready";
+                    stateStr += "Ready";
                     break;
                 case QTextToSpeech::Speaking:
-                    stateStr = "Speaking";
+                    stateStr += "Speaking";
                     break;
                 case QTextToSpeech::Paused:
-                    stateStr = "Paused";
+                    stateStr += "Paused";
                     break;
                 default:
-                    stateStr = "Unknown";
+                    stateStr += "Unknown";
                     break;
                 }
-            qDebug() << stateStr;
         });
         QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
     }
