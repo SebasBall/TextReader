@@ -139,8 +139,24 @@ void MainWindow::setTestMode(bool enabled){
                                      "Maecenas adipiscing ante non diam sodales hendrerit.");
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
         QTimer::singleShot(2000, this, [this]() {
-            qDebug() << "Speech state after triggering Play:" << speech.state();
-        });
+            QString stateStr;
+            switch (speech.state()) {
+                case QTextToSpeech::Ready:
+                    stateStr = "Ready";
+                    break;
+                case QTextToSpeech::Speaking:
+                    stateStr = "Speaking";
+                    break;
+                case QTextToSpeech::Paused:
+                    stateStr = "Paused";
+                    break;
+                case QTextToSpeech::Error:
+                    stateStr = "Error";
+                    break;
+                default:
+                    stateStr = "Unknown";
+                    break;
+                }});
         QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
     }
 
