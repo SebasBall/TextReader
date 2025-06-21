@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     scrot \
     speech-dispatcher \
     speech-dispatcher-espeak-ng \
-    espeak-ng \
+    espeak-ng-data \
+    espeak-ng-espeak \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
