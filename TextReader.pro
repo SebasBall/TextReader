@@ -29,5 +29,4 @@ DISTFILES += \
     Dockerfile_OLD \
     Dockerfile_OLD.jenkins \
     docker-compose.yml \
-    entrypoint.sh \
-    run_and_capture.sh
+    entrypoint.sh

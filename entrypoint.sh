@@ -13,7 +13,7 @@ echo "Launching TextReader..."
 ./TextReader &
 APP_PID=$!
 
-sleep 3
+sleep 20
 
 echo "Taking screenshot..."
 scrot /app/screenshot.png
