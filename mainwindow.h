@@ -17,9 +17,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void on_playButton_clicked();
 
 private slots:
-    void on_playButton_clicked();
     void setUpVoice(QVector<QVoice> voices, QString voiceName, QTextToSpeech &speech);
 
     void on_horizontalSlider_sliderPressed();
