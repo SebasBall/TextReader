@@ -16,6 +16,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->voiceSelection->setDuplicatesEnabled(false);
     qDebug() << "The application has been opened succesfully";
+
+    QString stateStr;
+    switch (speech.state()) {
+    case QTextToSpeech::Ready:
+        stateStr = "Ready";
+        break;
+    case QTextToSpeech::Speaking:
+        stateStr = "Speaking";
+        break;
+    case QTextToSpeech::Paused:
+        stateStr = "Paused";
+        break;
+    default:
+        stateStr = "Unknown";
+        break;
+    }
+    qDebug() << stateStr;
 }
 
 MainWindow::~MainWindow()
