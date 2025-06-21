@@ -157,7 +157,7 @@ void MainWindow::setTestMode(bool enabled){
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
         QTimer::singleShot(2000, this, [this]() {
             QString stateStr = "Speaker State: ";
-                switch (speech.state()) {
+            switch (speech.state()) {
                 case QTextToSpeech::Ready:
                     stateStr += "Ready";
                     break;
@@ -171,6 +171,7 @@ void MainWindow::setTestMode(bool enabled){
                     stateStr += "Unknown";
                     break;
                 }
+            qDebug() << stateStr;
         });
         QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
     }
