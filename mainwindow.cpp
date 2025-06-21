@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->locationsList->addItem("English");
     ui->locationsList->addItem("German");
 
-    ui->locationsList->setCurrentIndex(2);
-
     connect(&speech, &QTextToSpeech::stateChanged, this, &MainWindow::on_speech_end);
 
     ui->voiceSelection->setDuplicatesEnabled(false);
@@ -122,7 +120,23 @@ void MainWindow::setup_voicesList(){
     voices = speech.availableVoices();
     for (QVoice &voice : voices){
         ui->voiceSelection->addItem(voice.name());
-        qDebug() << "Voice:" << voice.name();
     }
 }
 
+void MainWindow::setTestMode(bool enabled){
+    qDebug() << "Test Started";
+    if (enabled) {
+        ui->textToRead->setPlainText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. "
+                                     "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. "
+                                     "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. "
+                                     "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. "
+                                     "Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. "
+                                     "Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. "
+                                     "Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. "
+                                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; "
+                                     "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. "
+                                     "Maecenas adipiscing ante non diam sodales hendrerit.");
+        QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
+    }
+    qDebug() << "Test Finished";
+}

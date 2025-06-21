@@ -10,10 +10,10 @@ XVFB_PID=$!
 sleep 2
 
 echo "Launching TextReader..."
-./TextReader &
+./TextReader --test-play &
 APP_PID=$!
 
-sleep 20
+sleep 5
 
 echo "Taking screenshot..."
 scrot /app/screenshot.png
