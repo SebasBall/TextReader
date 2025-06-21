@@ -46,6 +46,7 @@ void MainWindow::on_playButton_clicked()
         ui->playButton->setText("Play");
         PauseSpeech = true;
     }
+
     qDebug() << "The play button has been executed successfuly";
 }
 
@@ -137,6 +138,10 @@ void MainWindow::setTestMode(bool enabled){
                                      "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. "
                                      "Maecenas adipiscing ante non diam sodales hendrerit.");
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
+        QTimer::singleShot(2000, this, [this]() {
+            qDebug() << "Speech state after triggering Play:" << speech.state();
+        });
+        QTimer::singleShot(3000,this,qDebug() << "Test Finished");
     }
-    qDebug() << "Test Finished";
+
 }
