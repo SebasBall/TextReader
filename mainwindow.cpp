@@ -122,6 +122,7 @@ void MainWindow::setup_voicesList(){
     voices = speech.availableVoices();
     for (QVoice &voice : voices){
         ui->voiceSelection->addItem(voice.name());
+        qDebug() << "Voice:" << voice.name();
     }
 }
 
