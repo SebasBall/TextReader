@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xvfb \
     x11-utils \
     scrot \
+    speech-dispatcher \
+    speech-dispatcher-espeak-ng \
+    espeak-ng \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
