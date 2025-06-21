@@ -141,7 +141,7 @@ void MainWindow::setTestMode(bool enabled){
         QTimer::singleShot(2000, this, [this]() {
             qDebug() << "Speech state after triggering Play:" << speech.state();
         });
-        QTimer::singleShot(3000,this,qDebug() << "Test Finished");
+        QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
     }
 
 }
