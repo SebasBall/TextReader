@@ -19,8 +19,10 @@ TIMESTAMP=$(date +%s)
 SCREENSHOT_PATH="/app/screenshot_${TIMESTAMP}.png"
 
 echo "Taking screenshot..."
-rm -f /app/screenshot_*.png  # Clean up any old ones just in case
+rm -f /app/screenshot_*.png
 scrot "$SCREENSHOT_PATH"
+
+cp "$SCREENSHOT_PATH" /output/
 
 sleep 2
 
