@@ -153,7 +153,9 @@ void MainWindow::setTestMode(bool enabled){
                 default:
                     stateStr = "Unknown";
                     break;
-                }});
+                }
+            qDebug() << stateStr;
+        });
         QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
     }
 
