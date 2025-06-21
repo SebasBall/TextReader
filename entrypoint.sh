@@ -1,18 +1,18 @@
 #!/bin/bash
 
-echo "Starting Jenkins..."
-nohup java -jar /usr/share/jenkins/jenkins.war --httpPort=8080 > /app/jenkins.log 2>&1 &
-JENKINS_PID=$!
+# Start virtual display if required
+XVFB_DISPLAY=:99
+export DISPLAY=$XVFB_DISPLAY
 
-echo "Waiting for Jenkins to initialize..."
-sleep 15
+echo "Starting virtual framebuffer on $DISPLAY..."
+Xvfb $DISPLAY -screen 0 1024x768x16 &
 
-# Check if Jenkins is running
-if ps -p $JENKINS_PID > /dev/null; then
-    echo "Jenkins started successfully!"
-else
-    echo "Error: Jenkins failed to start."
-    exit 1
-fi
+# Give Xvfb a moment to spin up
+sleep 2
 
-tail -f /app/jenkins.log
+# Run the Qt app (you could add test logic here)
+echo "Launching TextReader..."
+./TextReader
+
+# Optional: capture a screenshot if needed for verification
+# scrot /app/screenshot.png
