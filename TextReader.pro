@@ -28,5 +28,6 @@ DISTFILES += \
     Dockerfile.jenkins \
     Dockerfile_OLD \
     Dockerfile_OLD.jenkins \
+    Jenkinsfile \
     docker-compose.yml \
     entrypoint.sh
