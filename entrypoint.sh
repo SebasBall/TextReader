@@ -15,9 +15,15 @@ APP_PID=$!
 
 sleep 5
 
+TIMESTAMP=$(date +%s)
+SCREENSHOT_PATH="/app/screenshot_${TIMESTAMP}.png"
+
 echo "Taking screenshot..."
-scrot /app/screenshot.png
+rm -f /app/screenshot_*.png  # Clean up any old ones just in case
+scrot "$SCREENSHOT_PATH"
 
 sleep 2
+
+echo "Cleaning up..."
 kill $APP_PID
 kill $XVFB_PID
