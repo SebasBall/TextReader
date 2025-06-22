@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 XVFB_DISPLAY=:99
@@ -15,7 +14,7 @@ echo "Launching TextReader..."
 ./TextReader --test-play &
 APP_PID=$!
 
-sleep 5  # Let the app settle for screenshot
+sleep 5  # Let the app reach a stable test state
 
 echo "Taking screenshot..."
 rm -f /app/screenshot_*.png
@@ -34,8 +33,11 @@ else
     echo "ERROR: Failed to take screenshot"
 fi
 
-echo "Waiting for TextReader to finish..."
-wait $APP_PID
+sleep 2
+
+echo "Sending SIGTERM to TextReader..."
+kill -SIGTERM $APP_PID || echo "Failed to send SIGTERM"
+wait $APP_PID || echo "TextReader exited with error"
 
 echo "Capturing coverage data..."
 GCDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \; | sort -u | head -n 1)
