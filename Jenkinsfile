@@ -14,7 +14,7 @@ pipeline {
                     docker run --rm -v "$PWD:/app" textreader-ci \
                     bash -c "
                         mkdir -p /app/output && \
-                        ./TextReader && \
+                        ./TextReader.exe && \
                         LATEST=\\$(ls -1t screenshot_*.png | head -n 1) && \
                         cp \\$LATEST /app/output/screenshot-latest.png && \
                         lcov --capture --directory . --output-file /app/output/coverage.info && \
