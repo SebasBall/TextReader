@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pulseaudio-utils \
     qtspeech5-speechd-plugin \
     lcov \
-    gcov \
     curl \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
