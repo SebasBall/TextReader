@@ -22,7 +22,7 @@ echo "Taking screenshot..."
 rm -f /app/screenshot_*.png
 scrot "$SCREENSHOT_PATH"
 
-cp "$SCREENSHOT_PATH" /output/
+cp "$SCREENSHOT_PATH" /workspace/
 
 sleep 2
 

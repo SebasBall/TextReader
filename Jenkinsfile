@@ -15,7 +15,7 @@ pipeline {
                         cp /workspace/entrypoint.sh /app &&
                         chmod +x /app/entrypoint.sh &&
                         /app/entrypoint.sh &&
-                        gcovr -r /workspace --xml-pretty -o /workspace/coverage.xml &&
+                        lcov --capture --directory /app --output-file /workspace/coverage.info
                         cp /workspace/screenshot_*.png /workspace/screenshot-latest.png
                     "
                 '''
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
                 sh '''
-                    bash <(curl -s https://codecov.io/bash) -f coverage.xml
+                    bash <(curl -s https://codecov.io/bash) -f coverage.info
                 '''
             }
         }
