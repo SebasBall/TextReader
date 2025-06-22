@@ -15,7 +15,15 @@ pipeline {
                         cp /workspace/entrypoint.sh /app &&
                         chmod +x /app/entrypoint.sh &&
                         /app/entrypoint.sh &&
-                        lcov --capture --directory /app --output-file /workspace/coverage.info
+
+                        GCDA_DIR=$(find /app -type f -name "*.gcda" -exec dirname {} \; | sort -u | head -n 1)
+                        if [ -n "$GCDA_DIR" ]; then
+                            echo "Found .gcda files in $GCDA_DIR"
+                            lcov --capture --directory "$GCDA_DIR" --output-file /workspace/coverage.info
+                        else
+                            echo "No .gcda files found. Skipping coverage capture."
+                        fi
+
                         LATEST=$(ls -1t /workspace/screenshot_*.png 2>/dev/null | head -n 1) && \
                         [ -n "$LATEST" ] && cp "$LATEST" /workspace/screenshot-latest.png || \
                         echo "No screenshot found to copy."
