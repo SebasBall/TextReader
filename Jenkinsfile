@@ -8,26 +8,17 @@ pipeline {
             }
         }
 
-        stage('Run Headless Test') {
-            steps {
+    stage('Run Headless Test') {
+        steps {
             sh '''
                 docker run --rm -v "$PWD:/workspace" textreader-ci /bin/bash -c "
                     cp /workspace/entrypoint.sh /app &&
                     chmod +x /app/entrypoint.sh &&
-                    /app/entrypoint.sh &&
-
-                    echo 'Searching for coverage data...'
-                    GCDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \\; | sort -u | head -n 1) && \
-                    if [ -n \\"$GCDA_DIR\\" ]; then
-                        echo 'Found coverage data in' \\"$GCDA_DIR\\"
-                        lcov --capture --directory \\"$GCDA_DIR\\" --output-file /workspace/coverage.info
-                    else
-                        echo 'WARNING: No .gcda files found. Skipping coverage capture.'
-                    fi
+                    /app/entrypoint.sh
                 "
             '''
-            }
         }
+    }
 
         stage('Archive Screenshot') {
             steps {

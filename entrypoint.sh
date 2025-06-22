@@ -15,11 +15,10 @@ echo "Launching TextReader..."
 ./TextReader --test-play &
 APP_PID=$!
 
-sleep 5
+sleep 5  # Let the app settle for screenshot
 
 echo "Taking screenshot..."
 rm -f /app/screenshot_*.png
-
 TIMESTAMP=$(date +%s)
 SCREENSHOT_PATH="/app/screenshot_${TIMESTAMP}.png"
 
@@ -35,13 +34,17 @@ else
     echo "ERROR: Failed to take screenshot"
 fi
 
-sleep 2
+echo "Waiting for TextReader to finish..."
+wait $APP_PID
 
-echo "Files in /app:"
-ls -l /app
-
-sleep 2
+echo "Capturing coverage data..."
+GCDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \; | sort -u | head -n 1)
+if [ -n "$GCDA_DIR" ]; then
+    echo "Found .gcda files in $GCDA_DIR"
+    lcov --capture --directory "$GCDA_DIR" --output-file /workspace/coverage.info
+else
+    echo "WARNING: No .gcda files found"
+fi
 
 echo "Cleaning up..."
-kill $APP_PID || echo "Failed to kill APP_PID (may have already exited)"
 kill $XVFB_PID
