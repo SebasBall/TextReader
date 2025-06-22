@@ -11,14 +11,15 @@ pipeline {
         stage('Run Headless Test') {
             steps {
                 sh '''
-                    docker run --rm -v "$PWD:/output" textreader-ci
-                    LATEST=$(ls -1t screenshot_*.png | head -n 1)
-                    cp "$LATEST" screenshot-latest.png
+                    docker run --rm -v "$PWD:/app" textreader-ci \
                     bash -c "
-                        mkdir -p /output && \
-                        lcov --capture --directory . --output-file /output/coverage.info && \
-                        cov --remove /output/coverage.info '/usr/*' '*/Qt/*' --output-file /output/coverage.cleaned.info
-                        "
+                        mkdir -p /app/output && \
+                        ./your-executable && \
+                        LATEST=\\$(ls -1t screenshot_*.png | head -n 1) && \
+                        cp \\$LATEST /app/output/screenshot-latest.png && \
+                        lcov --capture --directory . --output-file /app/output/coverage.info && \
+                        lcov --remove /app/output/coverage.info '/usr/*' '*/Qt/*' --output-file /app/output/coverage.cleaned.info
+                    "
                 '''
             }
         }
