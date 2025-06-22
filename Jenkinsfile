@@ -41,9 +41,9 @@ pipeline {
 
         stage('Upload Code Coverage') {
             steps {
-                archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
-                sh '''
-                    bash <(curl -s https://codecov.io/bash) -f coverage.info
+            archiveArtifacts artifacts: 'coverage.info', fingerprint: true
+             sh '''
+                bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov upload failed"
                 '''
             }
         }
