@@ -12,7 +12,7 @@ XVFB_PID=$!
 sleep 2
 
 echo "Launching TextReader..."
-./TextReader --test-play
+./TextReader --test-play &
 APP_PID=$!
 
 sleep 5
@@ -43,5 +43,5 @@ ls -l /app
 sleep 2
 
 echo "Cleaning up..."
-kill $APP_PID
+kill $APP_PID || echo "Failed to kill APP_PID (may have already exited)"
 kill $XVFB_PID
