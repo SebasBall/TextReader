@@ -14,8 +14,10 @@ pipeline {
                     docker run --rm -v "$PWD:/output" textreader-ci
                     LATEST=$(ls -1t screenshot_*.png | head -n 1)
                     cp "$LATEST" screenshot-latest.png
-                    lcov --capture --directory . --output-file /output/coverage.info &&
-                    lcov --remove /output/coverage.info '/usr/*' '*/Qt/*' --output-file /output/coverage.cleaned.info
+                    bash -c "
+                        lcov --capture --directory . --output-file /output/coverage.info && \
+                        cov --remove /output/coverage.info '/usr/*' '*/Qt/*' --output-file /output/coverage.cleaned.info
+                        "
                 '''
             }
         }
