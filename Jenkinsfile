@@ -15,6 +15,7 @@ pipeline {
                     LATEST=$(ls -1t screenshot_*.png | head -n 1)
                     cp "$LATEST" screenshot-latest.png
                     bash -c "
+                        mkdir -p /output && \
                         lcov --capture --directory . --output-file /output/coverage.info && \
                         cov --remove /output/coverage.info '/usr/*' '*/Qt/*' --output-file /output/coverage.cleaned.info
                         "
