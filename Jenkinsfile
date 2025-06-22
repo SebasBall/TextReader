@@ -16,7 +16,9 @@ pipeline {
                         chmod +x /app/entrypoint.sh &&
                         /app/entrypoint.sh &&
                         lcov --capture --directory /app --output-file /workspace/coverage.info
-                        cp /workspace/screenshot_*.png /workspace/screenshot-latest.png
+                        LATEST=$(ls -1t /workspace/screenshot_*.png 2>/dev/null | head -n 1) && \
+                        [ -n "$LATEST" ] && cp "$LATEST" /workspace/screenshot-latest.png || \
+                        echo "No screenshot found to copy."
                     "
                 '''
             }
