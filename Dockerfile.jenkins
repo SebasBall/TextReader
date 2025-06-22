@@ -1,0 +1,36 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    qtbase5-dev \
+    libqt5texttospeech5-dev \
+    xvfb \
+    x11-utils \
+    scrot \
+    speech-dispatcher \
+    speech-dispatcher-espeak-ng \
+    espeak-ng \
+    espeak-ng-data \
+    espeak-ng-espeak \
+    pulseaudio-utils \
+    qtspeech5-speechd-plugin \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy project files
+COPY . /app
+
+# Build the application
+RUN qmake -makefile TextReader.pro && \
+    make -j$(nproc)
+
+# Copy entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+CMD ["/app/entrypoint.sh"]

@@ -1,28 +1,31 @@
 #!/bin/bash
-Xvfb :99 -screen 0 1024x768x24 &
-XVFB_PID=$!
-export DISPLAY=:99
 
-nohup /app/TextReader &
+XVFB_DISPLAY=:99
+export DISPLAY=$XVFB_DISPLAY
+
+echo "Starting virtual framebuffer on $DISPLAY..."
+Xvfb $DISPLAY -screen 0 1024x768x16 &
+XVFB_PID=$!
+
+sleep 2
+
+echo "Launching TextReader..."
+./TextReader --test-play &
 APP_PID=$!
 
-echo "Waiting for app to open (5 seconds)..."
 sleep 5
 
+TIMESTAMP=$(date +%s)
+SCREENSHOT_PATH="/app/screenshot_${TIMESTAMP}.png"
+
 echo "Taking screenshot..."
-scrot /mnt/workspace/screenshot.png
-if [ $? -eq 0 ]; then
-    echo "scrot command executed successfully"
-    ls -l /mnt/workspace/screenshot.png
-else
-    echo "scrot command failed to execute or save file"
-    exit 1
-fi
+rm -f /app/screenshot_*.png
+scrot "$SCREENSHOT_PATH"
 
-echo "Screenshot process completed. Forcibly closing app..."
+cp "$SCREENSHOT_PATH" /output/
+
+sleep 2
+
+echo "Cleaning up..."
 kill $APP_PID
-
-echo "App process terminated. Cleaning up Xvfb."
 kill $XVFB_PID
-
-exit 0

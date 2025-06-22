@@ -15,6 +15,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&speech, &QTextToSpeech::stateChanged, this, &MainWindow::on_speech_end);
 
     ui->voiceSelection->setDuplicatesEnabled(false);
+    qDebug() << "The application has been opened succesfully";
+
+    QString stateStr = "Speaker State: ";
+    switch (speech.state()) {
+    case QTextToSpeech::Ready:
+        stateStr += "Ready";
+        break;
+    case QTextToSpeech::Speaking:
+        stateStr += "Speaking";
+        break;
+    case QTextToSpeech::Paused:
+        stateStr += "Paused";
+        break;
+    default:
+        stateStr += "Unknown";
+        break;
+    }
+    qDebug() << stateStr;
 }
 
 MainWindow::~MainWindow()
@@ -26,6 +44,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_playButton_clicked()
 {
+    qDebug() << "The play button has been pressed";
     if(StopSpeech){
         speech.stop();
         setUpVoice(voices, ui->voiceSelection->currentText(), speech);
@@ -44,6 +63,8 @@ void MainWindow::on_playButton_clicked()
         ui->playButton->setText("Play");
         PauseSpeech = true;
     }
+
+    qDebug() << "The play button has been executed successfuly";
 }
 
 void MainWindow::setUpVoice(QVector<QVoice> voices,QString voiceName, QTextToSpeech &speech){
@@ -120,3 +141,39 @@ void MainWindow::setup_voicesList(){
     }
 }
 
+void MainWindow::setTestMode(bool enabled){
+    qDebug() << "Test Started";
+    if (enabled) {
+        ui->textToRead->setPlainText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. "
+                                     "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. "
+                                     "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. "
+                                     "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. "
+                                     "Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. "
+                                     "Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. "
+                                     "Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. "
+                                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; "
+                                     "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. "
+                                     "Maecenas adipiscing ante non diam sodales hendrerit.");
+        QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
+        QTimer::singleShot(2000, this, [this]() {
+            QString stateStr = "Speaker State: ";
+            switch (speech.state()) {
+                case QTextToSpeech::Ready:
+                    stateStr += "Ready";
+                    break;
+                case QTextToSpeech::Speaking:
+                    stateStr += "Speaking";
+                    break;
+                case QTextToSpeech::Paused:
+                    stateStr += "Paused";
+                    break;
+                default:
+                    stateStr += "Unknown";
+                    break;
+                }
+            qDebug() << stateStr;
+        });
+        QTimer::singleShot(3000,this,[this](){qDebug() << "Test Finished";});
+    }
+
+}
