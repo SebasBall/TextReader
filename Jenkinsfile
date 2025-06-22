@@ -11,14 +11,12 @@ pipeline {
         stage('Run Headless Test') {
             steps {
                 sh '''
-                    docker run --rm -v "$PWD:/app" textreader-ci \
-                    bash -c "
-                        mkdir -p /app/output && \
-                        ./TextReader.exe && \
-                        LATEST=\\$(ls -1t screenshot_*.png | head -n 1) && \
-                        cp \\$LATEST /app/output/screenshot-latest.png && \
-                        lcov --capture --directory . --output-file /app/output/coverage.info && \
-                        lcov --remove /app/output/coverage.info '/usr/*' '*/Qt/*' --output-file /app/output/coverage.cleaned.info
+                    docker run --rm -v "$PWD:/output" textreader-ci /bin/bash -c "
+                        cd /output &&
+                        ./entrypoint.sh &&  # replace with your actual test runner
+                        gcovr -r . --xml-pretty -o coverage.xml &&
+                        LATEST=$(ls -1t screenshot_*.png | head -n 1) &&
+                        cp $LATEST screenshot-latest.png
                     "
                 '''
             }
@@ -30,13 +28,14 @@ pipeline {
             }
         }
 
-        stage('Upload to Codecov') {
+
+        stage('Upload Code Coverage') {
             steps {
+                archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
                 sh '''
-                    bash <(curl -s https://codecov.io/bash) -f coverage.cleaned.info
+                    bash <(curl -s https://codecov.io/bash) -f coverage.xml
                 '''
             }
         }
-
     }
 }
