@@ -31,3 +31,7 @@ DISTFILES += \
     Jenkinsfile \
     docker-compose.yml \
     entrypoint.sh
+
+# Enable GCC coverage tracking
+QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage

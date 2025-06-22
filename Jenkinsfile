@@ -14,6 +14,8 @@ pipeline {
                     docker run --rm -v "$PWD:/output" textreader-ci
                     LATEST=$(ls -1t screenshot_*.png | head -n 1)
                     cp "$LATEST" screenshot-latest.png
+                    lcov --capture --directory . --output-file /output/coverage.info &&
+                    lcov --remove /output/coverage.info '/usr/*' '*/Qt/*' --output-file /output/coverage.cleaned.info
                 '''
             }
         }
@@ -23,5 +25,14 @@ pipeline {
                 archiveArtifacts artifacts: 'screenshot-latest.png', fingerprint: true
             }
         }
+
+        stage('Upload to Codecov') {
+            steps {
+                sh '''
+                    bash <(curl -s https://codecov.io/bash) -f coverage.cleaned.info
+                '''
+            }
+        }
+
     }
 }
