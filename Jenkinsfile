@@ -11,12 +11,12 @@ pipeline {
         stage('Run Headless Test') {
             steps {
                 sh '''
-                    docker run --rm -v "$PWD:/output" textreader-ci /bin/bash -c "
-                        cd /output &&
-                        ./entrypoint.sh &&  # replace with your actual test runner
-                        gcovr -r . --xml-pretty -o coverage.xml &&
-                        LATEST=$(ls -1t screenshot_*.png | head -n 1) &&
-                        cp $LATEST screenshot-latest.png
+                    docker run --rm -v "$PWD:/workspace" textreader-ci /bin/bash -c "
+                        cp /workspace/entrypoint.sh /app &&
+                        chmod +x /app/entrypoint.sh &&
+                        /app/entrypoint.sh &&
+                        gcovr -r /workspace --xml-pretty -o /workspace/coverage.xml &&
+                        cp /workspace/screenshot_*.png /workspace/screenshot-latest.png
                     "
                 '''
             }
