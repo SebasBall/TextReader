@@ -12,7 +12,7 @@ XVFB_PID=$!
 sleep 2
 
 echo "Launching TextReader..."
-./TextReader --test-play &
+./TextReader --test-play
 APP_PID=$!
 
 sleep 5

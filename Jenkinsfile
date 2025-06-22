@@ -46,13 +46,16 @@ pipeline {
 
         stage('Upload Code Coverage') {
             steps {
-                archiveArtifacts artifacts: 'coverage.info', fingerprint: true
-                sh '''
-                    curl -Os https://uploader.codecov.io/latest/linux/codecov && \
-                    chmod +x codecov && \
-                    ./codecov -f coverage.info || echo "Codecov upload failed"
-                '''
+                withCredentials([string(credentialsId: 'codecov-token', variable: 'CODECOV_TOKEN')]) {
+                    archiveArtifacts artifacts: 'coverage.info', fingerprint: true
+                    sh '''
+                        curl -Os https://uploader.codecov.io/latest/linux/codecov && \
+                        chmod +x codecov && \
+                        ./codecov -f coverage.info -t $CODECOV_TOKEN || echo "Codecov upload failed"
+                    '''
+                }
             }
         }
+
     }
 }
