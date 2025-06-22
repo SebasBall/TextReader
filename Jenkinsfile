@@ -16,7 +16,8 @@ pipeline {
                         chmod +x /app/entrypoint.sh &&
                         /app/entrypoint.sh &&
 
-                        CDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \\; | sort -u | head -n 1) && \
+                        echo 'Searching for coverage data...'
+                        GCDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \\; | sort -u | head -n 1) && \
                         if [ -n \\"$GCDA_DIR\\" ]; then
                             echo 'Found coverage data in' \\"$GCDA_DIR\\"
                             lcov --capture --directory \\"$GCDA_DIR\\" --output-file /workspace/coverage.info
@@ -24,9 +25,14 @@ pipeline {
                             echo 'WARNING: No .gcda files found. Skipping coverage capture.'
                         fi &&
 
+                        echo 'Processing screenshot...'
                         LATEST=$(ls -1t /workspace/screenshot_*.png 2>/dev/null | head -n 1) && \
-                        [ -n "$LATEST" ] && cp "$LATEST" /workspace/screenshot-latest.png || \
-                        echo "No screenshot found to copy."
+                        if [ -n \\"$LATEST\\" ]; then
+                            cp \\"$LATEST\\" /workspace/screenshot-latest.png
+                            echo 'Copied latest screenshot to screenshot-latest.png'
+                        else
+                            echo 'No screenshot found to copy.'
+                        fi
                     "
                 '''
             }
@@ -38,12 +44,11 @@ pipeline {
             }
         }
 
-
         stage('Upload Code Coverage') {
             steps {
-            archiveArtifacts artifacts: 'coverage.info', fingerprint: true
-             sh '''
-                bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov upload failed"
+                archiveArtifacts artifacts: 'coverage.info', fingerprint: true
+                sh '''
+                    bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov upload failed"
                 '''
             }
         }
