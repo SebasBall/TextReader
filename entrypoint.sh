@@ -44,6 +44,13 @@ GCDA_DIR=$(find /app -type f -name '*.gcda' -exec dirname {} \; | sort -u | head
 if [ -n "$GCDA_DIR" ]; then
     echo "Found .gcda files in $GCDA_DIR"
     lcov --capture --directory "$GCDA_DIR" --output-file /workspace/coverage.info
+    echo "Verifying coverage file..."
+    if [ -s /workspace/coverage.info ]; then
+        echo "coverage.info successfully generated!"
+    else
+        echo "coverage.info is empty."
+    fi
+
 else
     echo "WARNING: No .gcda files found"
 fi
