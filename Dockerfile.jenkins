@@ -29,7 +29,7 @@ WORKDIR /app
 COPY . /app
 
 # Build the application
-RUN qmake -makefile TextReader.pro && \
+RUN qmake -makefile TextReader.pro "QMAKE_CXXFLAGS+=--coverage" "QMAKE_LFLAGS+=--coverage" && \
     make -j$(nproc)
 
 # Copy entrypoint script

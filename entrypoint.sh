@@ -37,6 +37,11 @@ fi
 
 sleep 2
 
+echo "Files in /app:"
+ls -l /app
+
+sleep 2
+
 echo "Cleaning up..."
 kill $APP_PID
 kill $XVFB_PID

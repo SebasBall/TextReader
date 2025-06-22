@@ -48,7 +48,9 @@ pipeline {
             steps {
                 archiveArtifacts artifacts: 'coverage.info', fingerprint: true
                 sh '''
-                    bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov upload failed"
+                    curl -Os https://uploader.codecov.io/latest/linux/codecov && \
+                    chmod +x codecov && \
+                    ./codecov -f coverage.info || echo "Codecov upload failed"
                 '''
             }
         }
