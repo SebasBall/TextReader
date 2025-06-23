@@ -144,10 +144,10 @@ void MainWindow::setup_voicesList(){
 void MainWindow::setTestMode(bool enabled){
     qDebug() << "Test Started";
     if (enabled) {
-        ui->textToRead->setPlainText("Las manzanas son frutas versátiles y nutritivas que han sido cultivadas desde tiempos antiguos. "
-                                     "Su sabor puede variar desde dulce hasta ácido, y se disfrutan tanto crudas como cocidas en una gran variedad de recetas. "
-                                     "Además de ser deliciosas, son una buena fuente de fibra y antioxidantes. "
-                                     "Ya sea en una tarta, en jugo o simplemente al natural, la manzana ha sabido mantenerse como un clásico en la alimentación diaria.");
+        ui->textToRead->setPlainText("Las rosas son flores emblemáticas que han cautivado al ser humano por siglos gracias a su belleza y fragancia. "
+                                     "Existen en una amplia gama de colores, cada uno con su propio simbolismo: el rojo representa el amor, el blanco la pureza y el amarillo la amistad. "
+                                     "Además de su valor ornamental, las rosas también se utilizan en la fabricación de perfumes, infusiones y productos cosméticos. "
+                                     "Cultivadas en jardines y celebradas en poesía, las rosas siguen siendo un símbolo universal de admiración y sentimiento profundo.");
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
         QTimer::singleShot(2000, this, [this]() {
             QString stateStr = "Speaker State: ";
