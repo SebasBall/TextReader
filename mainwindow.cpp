@@ -144,10 +144,10 @@ void MainWindow::setup_voicesList(){
 void MainWindow::setTestMode(bool enabled){
     qDebug() << "Test Started";
     if (enabled) {
-        ui->textToRead->setPlainText("Las rosas son flores emblemáticas que han cautivado al ser humano por siglos gracias a su belleza y fragancia. "
-                                     "Existen en una amplia gama de colores, cada uno con su propio simbolismo: el rojo representa el amor, el blanco la pureza y el amarillo la amistad. "
-                                     "Además de su valor ornamental, las rosas también se utilizan en la fabricación de perfumes, infusiones y productos cosméticos. "
-                                     "Cultivadas en jardines y celebradas en poesía, las rosas siguen siendo un símbolo universal de admiración y sentimiento profundo.");
+        ui->textToRead->setPlainText("El geranio rojo es una flor vibrante y resistente que ha ganado popularidad en jardines y balcones por su color intenso y facilidad de cultivo. "
+                                     "Su tonalidad roja simboliza la pasión y la energía, transmitiendo calidez en cualquier entorno donde se encuentre. "
+                                     "Además de su belleza, el geranio es valorado por sus propiedades repelentes de insectos y su uso en aceites esenciales y productos naturales. "
+                                     "Su presencia aporta alegría visual y un toque de vitalidad, convirtiéndolo en una opción ideal tanto para espacios ornamentales como funcionales.");
         QTimer::singleShot(1000, this, SLOT(on_playButton_clicked()));
         QTimer::singleShot(2000, this, [this]() {
             QString stateStr = "Speaker State: ";
